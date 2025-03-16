@@ -33,10 +33,11 @@ class VideoDetailViewModel @Inject constructor(
     }
 
     fun handleAction(action: VideoDetailAction) {
-        when(action) {
+        when (action) {
             is VideoDetailAction.LoadData -> {
-                val videoId = action.id
-                loadVideo(videoId)
+                videoPlayer.pause() // ⛔ Dừng video trước đó
+                videoPlayer.seekTo(0) // 🔄 Đặt lại thời gian về 0
+                loadVideo(action.id) // ⏯ Tải và phát video mới
             }
             is VideoDetailAction.ToggleVideo -> {
                 toggleVideo()
@@ -62,6 +63,17 @@ class VideoDetailViewModel @Inject constructor(
         videoPlayer.play()
     }
 
+    fun playVideo() {
+        videoPlayer.playWhenReady = true
+        videoPlayer.volume = 1f // ✅ Bật âm thanh khi active
+    }
+
+    fun pauseVideo() {
+        videoPlayer.playWhenReady = false
+        videoPlayer.volume = 0f // ✅ Tắt âm thanh khi không active
+    }
+
+
     private fun toggleVideo() {
         if(videoPlayer.isLoading) {
 
@@ -73,7 +85,6 @@ class VideoDetailViewModel @Inject constructor(
             }
         }
     }
-
 }
 
 // MVVM

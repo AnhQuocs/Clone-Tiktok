@@ -14,8 +14,8 @@ android {
 
     defaultConfig {
         applicationId = "com.example.clonetiktok"
-        minSdk = 35
-        targetSdk = 35
+        minSdk = 34
+        targetSdk = 34
         versionCode = 1
         versionName = "1.0"
 
@@ -71,7 +71,7 @@ dependencies {
 
     implementation("com.google.dagger:hilt-android:2.50")
     kapt("com.google.dagger:hilt-android-compiler:2.50")
-    implementation("androidx.hilt:hilt-navigation-compose:1.0.0")
+    implementation("androidx.hilt:hilt-navigation-compose:1.1.0-alpha01")
 
     implementation("io.coil-kt:coil-compose:2.1.0")
 
@@ -82,6 +82,8 @@ dependencies {
 
     implementation("androidx.compose.animation:animation:1.6.1")
     implementation("androidx.compose.material:material-icons-extended:1.5.1")
+
+    implementation("com.google.accompanist:accompanist-pager:0.31.1-alpha")
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

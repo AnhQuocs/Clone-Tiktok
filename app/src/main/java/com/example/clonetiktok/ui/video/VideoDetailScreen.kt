@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -23,20 +24,31 @@ import com.example.clonetiktok.ui.video.composables.VideoInfoArea
 @Composable
 fun VideoDetailScreen(
     videoId: Int,
-    viewModel: VideoDetailViewModel = hiltViewModel( )
+    viewModel: VideoDetailViewModel = hiltViewModel(),
+    isActive: Boolean // ✅ Nhận trạng thái active từ VerticalPager
 ) {
     val uiState = viewModel.uiState.collectAsState()
 
-    if(uiState.value == VideoDetailUiState.Default) {
-        // Loading
+    if (uiState.value == VideoDetailUiState.Default) {
         viewModel.handleAction(VideoDetailAction.LoadData(videoId))
     }
 
-    VideoDetailScreen(uiState = uiState.value, player = viewModel.videoPlayer) {
-        action ->
-        viewModel.handleAction(action = action)
+    // ✅ Kiểm soát phát/dừng video và âm lượng
+    LaunchedEffect(isActive) {
+        if (isActive) {
+            viewModel.videoPlayer.seekTo(0)
+            viewModel.playVideo() // Phát video khi active
+        } else {
+            viewModel.pauseVideo() // Dừng hẳn video khi không active
+        }
     }
+
+    VideoDetailScreen(
+        uiState = uiState.value,
+        player = viewModel.videoPlayer
+    ) { action -> viewModel.handleAction(action) }
 }
+
 
 @UnstableApi
 @Composable
