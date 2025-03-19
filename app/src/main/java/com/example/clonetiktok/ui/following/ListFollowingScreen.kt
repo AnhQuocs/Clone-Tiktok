@@ -1,4 +1,4 @@
-package com.example.clonetiktok.ui.foryou
+package com.example.clonetiktok.ui.following
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.pager.VerticalPager
@@ -13,17 +13,17 @@ import com.example.clonetiktok.ui.video.VideoDetailViewModel
 @UnstableApi
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun ListForYouVideoScreen(
+fun ListFollowingVideoScreen(
     modifier: Modifier = Modifier,
     onShowComment: (Int) -> Unit,
-    isForYouActive: Boolean
+    isFollowingActive: Boolean // 🔥 Biết được màn hình có đang hiển thị hay không
 ) {
     val pagerState = rememberPagerState(pageCount = { 10 })
 
     VerticalPager(state = pagerState) { videoId ->
         val viewModel: VideoDetailViewModel = hiltViewModel(key = videoId.toString())
 
-        val isActive = isForYouActive && pagerState.currentPage == videoId // Chỉ phát video khi màn hình này đang hiển thị
+        val isActive = isFollowingActive && pagerState.currentPage == videoId // ✅ Chỉ phát video khi đúng trang và đúng màn hình
 
         VideoDetailScreen(videoId = videoId, viewModel = viewModel, isActive = isActive, onShowComment = onShowComment)
     }

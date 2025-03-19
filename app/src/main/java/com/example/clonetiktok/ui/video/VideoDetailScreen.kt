@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
@@ -25,7 +26,8 @@ import com.example.clonetiktok.ui.video.composables.VideoInfoArea
 fun VideoDetailScreen(
     videoId: Int,
     viewModel: VideoDetailViewModel = hiltViewModel(),
-    isActive: Boolean // ✅ Nhận trạng thái active từ VerticalPager
+    isActive: Boolean, // ✅ Nhận trạng thái active từ VerticalPager
+    onShowComment: (Int) -> Unit
 ) {
     val uiState = viewModel.uiState.collectAsState()
 
@@ -43,18 +45,27 @@ fun VideoDetailScreen(
         }
     }
 
+    DisposableEffect(Unit) {
+        onDispose {
+            viewModel.pauseVideo()
+        }
+    }
+
     VideoDetailScreen(
         uiState = uiState.value,
-        player = viewModel.videoPlayer
+        player = viewModel.videoPlayer,
+        onShowComment = {
+            onShowComment(videoId)
+        }
     ) { action -> viewModel.handleAction(action) }
 }
-
 
 @UnstableApi
 @Composable
 fun VideoDetailScreen(
     uiState: VideoDetailUiState,
     player: Player,
+    onShowComment: () -> Unit,
     handleAction: (VideoDetailAction) -> Unit
 ) {
     when(uiState) {
@@ -64,7 +75,7 @@ fun VideoDetailScreen(
             }
         }
         is VideoDetailUiState.Success -> {
-            VideoDetailScreen(player = player, handleAction = handleAction)
+            VideoDetailScreen(player = player, handleAction = handleAction, onShowComment = onShowComment)
         }
         else -> {
 
@@ -76,14 +87,17 @@ fun VideoDetailScreen(
 @Composable
 fun VideoDetailScreen(
     player: Player,
-    handleAction: (VideoDetailAction) -> Unit
+    handleAction: (VideoDetailAction) -> Unit,
+    onShowComment: () -> Unit
 ) {
 
-    ConstraintLayout(modifier = Modifier.fillMaxSize().clickable (
-        onClick = {
-            handleAction(VideoDetailAction.ToggleVideo)
-        }
-    )) {
+    ConstraintLayout(modifier = Modifier
+        .fillMaxSize()
+        .clickable(
+            onClick = {
+                handleAction(VideoDetailAction.ToggleVideo)
+            }
+        )) {
         val (videoPlayer, sideBar, videoInfo) = createRefs()
 
         TiktokVideoPlayer(player = player, modifier = Modifier.constrainAs(videoPlayer) {
@@ -98,7 +112,7 @@ fun VideoDetailScreen(
         SideBarView(
             onAvatarClick = {},
             onLikeClick = {},
-            onChatClick = {},
+            onChatClick = onShowComment,
             onSaveClick = {},
             onShareClick = {},
             modifier = Modifier.constrainAs(sideBar) {
@@ -115,10 +129,10 @@ fun VideoDetailScreen(
                 "#android",
                 "#tiktok"
             ),
-            songName = "Tràn bộ nhớ (DƯƠNG DOMIC)",
+            songName = "Tràn bộ nhớ (ATSH)",
             modifier = Modifier.constrainAs(videoInfo) {
                 start.linkTo(parent.start, margin = 16.dp)
-                bottom.linkTo(sideBar.bottom, margin = 8.dp)
+                bottom.linkTo(sideBar.bottom)
                 end.linkTo(sideBar.start, margin = 40.dp)
                 width = Dimension.fillToConstraints
             }

@@ -38,21 +38,21 @@ fun VideoInfoArea(
     ) {
         Text(
             text = accountName,
-            style = MaterialTheme.typography.headlineMedium.copy(color = Color.White, fontSize = 20.sp, fontWeight = FontWeight.Bold),
+            style = MaterialTheme.typography.headlineMedium.copy(color = Color.White, fontSize = 18.sp, fontWeight = FontWeight.Bold),
             maxLines = 1
         )
         Text(
             text = videoName,
-            style = MaterialTheme.typography.bodyLarge.copy(color = Color.White, fontSize = 17.sp, lineHeight = 18.sp),
+            style = MaterialTheme.typography.bodyLarge.copy(color = Color.White, fontSize = 16.sp, lineHeight = 18.sp),
             maxLines = 2
         )
-        Spacer(Modifier.height(6.dp))
+        Spacer(Modifier.height(4.dp))
         Text(
             text = hashtag.joinToString(" "),
-            style = MaterialTheme.typography.bodyLarge.copy(color = Color.White, fontSize = 18.sp, fontWeight = FontWeight.Bold),
+            style = MaterialTheme.typography.bodyLarge.copy(color = Color.White, fontSize = 16.sp, fontWeight = FontWeight.Bold),
             maxLines = 1
         )
-        Spacer(Modifier.height(6.dp))
+        Spacer(Modifier.height(4.dp))
         Row {
             Icon(
                 imageVector = Icons.Rounded.MusicNote,
@@ -62,7 +62,7 @@ fun VideoInfoArea(
             )
             Text(
                 text = songName,
-                style = MaterialTheme.typography.bodyLarge.copy(color = Color.White, fontSize = 17.5.sp),
+                style = MaterialTheme.typography.bodyLarge.copy(color = Color.White, fontSize = 16.sp),
                 maxLines = 1
             )
         }

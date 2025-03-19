@@ -12,6 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.media3.common.util.UnstableApi
+import com.example.clonetiktok.ui.MainScreen
 import com.example.clonetiktok.ui.following.FollowingScreen
 import com.example.clonetiktok.ui.foryou.ListForYouVideoScreen
 import com.example.clonetiktok.ui.theme.CloneTiktokTheme
@@ -29,8 +30,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-//                    ListForYouVideoScreen()
-                    FollowingScreen()
+                    MainScreen()
                 }
             }
         }

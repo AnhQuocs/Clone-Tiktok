@@ -56,7 +56,7 @@ fun AvatarView(
             painter = painterResource(R.drawable.ic_dog),
             contentDescription = "icon avatar",
             modifier = Modifier
-                .size(52.dp)
+                .size(48.dp)
                 .background(shape = CircleShape, color = Color.White)
                 .border(2.dp, shape = CircleShape, color = Color.White)
                 .clip(shape = CircleShape)
@@ -118,7 +118,7 @@ fun AudioTrackView(
         painter = painterResource(id = R.drawable.ic_audio_track),
         contentDescription = "audio track",
         modifier = modifier
-            .size(52.dp)
+            .size(48.dp)
             .rotate(rotation)
     )
 }
@@ -149,7 +149,7 @@ fun VideoAttractiveInfoItem(
         Icon(
             painter = painterResource(id = icon),
             contentDescription = "icon",
-            modifier = Modifier.size(35.dp),
+            modifier = Modifier.size(30.dp),
             tint = Color.White
         )
 
@@ -187,15 +187,15 @@ fun SideBarView(
         AvatarView {
             onAvatarClick()
         }
-        Spacer(Modifier.height(28.dp))
+        Spacer(Modifier.height(24.dp))
         VideoAttractiveInfoItem(icon = R.drawable.ic_heart, text = "1.5M") { onLikeClick() }
-        Spacer(Modifier.height(16.dp))
+        Spacer(Modifier.height(12.dp))
         VideoAttractiveInfoItem(icon = R.drawable.ic_chat, text = "8136") { onChatClick() }
-        Spacer(Modifier.height(16.dp))
+        Spacer(Modifier.height(12.dp))
         VideoAttractiveInfoItem(icon = R.drawable.ic_bookmark, text = "102K") { onSaveClick() }
-        Spacer(Modifier.height(16.dp))
+        Spacer(Modifier.height(12.dp))
         VideoAttractiveInfoItem(icon = R.drawable.ic_share, text = "75.7K") { onShareClick() }
-        Spacer(Modifier.height(16.dp))
+        Spacer(Modifier.height(12.dp))
         AudioTrackView()
     }
 }

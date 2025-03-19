@@ -1,5 +1,6 @@
 package com.example.clonetiktok.ui.following
 
+import android.provider.MediaStore.Video
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -31,7 +32,10 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.SideEffect
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -51,6 +55,7 @@ import androidx.media3.common.util.UnstableApi
 import androidx.media3.datasource.RawResourceDataSource
 import androidx.media3.exoplayer.ExoPlayer
 import com.example.clonetiktok.R
+import com.example.clonetiktok.data.repositories.VideoRepository
 import com.example.clonetiktok.designsystem.TiktokVideoPlayer
 import com.example.clonetiktok.ui.theme.CloneTiktokTheme
 import kotlin.math.absoluteValue
@@ -59,7 +64,8 @@ import kotlin.math.absoluteValue
 @UnstableApi
 @Composable
 fun FollowingScreen(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    isScreenActive: Boolean
 ) {
     val pagerState = rememberPagerState(pageCount = { 10 })
     val cardWidth = (LocalConfiguration.current.screenWidthDp * 2/3) - 24 //hiển thị các video bên cạnh
@@ -103,7 +109,8 @@ fun FollowingScreen(
             pageSpacing = 12.dp, // khoảng cách giữa các video
             contentPadding = PaddingValues(horizontal = paddingValue.dp) // padding start đầu tiên
         ) {
-            page ->
+                page ->
+            val isPlaying = isScreenActive && pagerState.currentPage == page // Xác định trang trung tâm
             Card(
                 modifier = Modifier
                     .width(cardWidth.dp)
@@ -123,7 +130,13 @@ fun FollowingScreen(
                     }
                     .clip(RoundedCornerShape(16.dp))
             ) {
-                CreatorCard(name = "AnhQuocs ${page+1}", idName = "@anhquocs_${page+1}", onFollow = {}, onClose = {})
+                CreatorCard(
+                    name = "AnhQuocs ${page+1}",
+                    idName = "@anhquocs_${page+1}",
+                    onFollow = {},
+                    onClose = {},
+                    isPlaying = isPlaying
+                )
             }
         }
     }
@@ -136,12 +149,37 @@ fun CreatorCard(
     name: String,
     idName: String,
     onFollow: () -> Unit,
-    onClose:() -> Unit
+    onClose: () -> Unit,
+    isPlaying: Boolean,
+    videoRepository: VideoRepository = remember { VideoRepository() }
 ) {
-    val videoPlayer = ExoPlayer.Builder(LocalContext.current).build()
-    videoPlayer.repeatMode = Player.REPEAT_MODE_ALL
-    videoPlayer.playWhenReady = true
-    videoPlayer.prepare()
+    val context = LocalContext.current
+    val videoPlayer = remember(name) { ExoPlayer.Builder(context).build().apply {
+        repeatMode = Player.REPEAT_MODE_ALL
+        playWhenReady = false
+        prepare()
+    }}
+
+    val randomVideo = remember { videoRepository.getVideo() }
+    val uri = RawResourceDataSource.buildRawResourceUri(randomVideo)
+    val mediaItem = MediaItem.fromUri(uri)
+    videoPlayer.setMediaItem(mediaItem)
+
+    // Cập nhật trạng thái của player khi isPlaying thay đổi
+    LaunchedEffect(isPlaying) {
+        if (isPlaying) {
+            videoPlayer.seekTo(0)
+            videoPlayer.play()
+        } else {
+            videoPlayer.pause()
+        }
+    }
+
+    DisposableEffect(Unit) {
+        onDispose {
+            videoPlayer.release()
+        }
+    }
 
     ConstraintLayout(
         modifier = modifier
@@ -218,14 +256,8 @@ fun CreatorCard(
             bottom.linkTo(tvName.top, margin = 8.dp)
         })
     }
-
-    val uri = RawResourceDataSource.buildRawResourceUri(R.raw.test)
-    val mediaItem = MediaItem.fromUri(uri)
-    videoPlayer.setMediaItem(mediaItem)
-    SideEffect {
-        videoPlayer.play()
-    }
 }
+
 
 @Composable
 fun AvatarFollowing(
