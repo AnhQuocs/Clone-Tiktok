@@ -69,9 +69,9 @@ fun AvatarView(
         )
 
         Box(modifier = Modifier
-            .size(26.dp)
+            .size(24.dp)
             .background(
-                color = MaterialTheme.colorScheme.error, shape = CircleShape
+                color = Color(0xFFE94359), shape = CircleShape
             )
             .constrainAs(addIcon) {
                 top.linkTo(imgAvatar.bottom)

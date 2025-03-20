@@ -19,6 +19,7 @@ import androidx.compose.material.Divider
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -116,9 +117,7 @@ fun MainScreen(
             containerColor = Color.White
         ) {
             if (currentVideoId != -1) {
-                CommentScreen(videoId = currentVideoId) {
-                    hideCommentBottomSheet()
-                }
+                CommentScreen(videoId = currentVideoId)
             }
         }
     }
@@ -156,7 +155,7 @@ fun MainScreen(
                     2 -> ProfileScreen()
                     else -> ListForYouVideoScreen(
                         isForYouActive = isForYouActive,
-                        onShowComment = {videoId -> currentVideoId = videoId}
+                        onShowComment = showCommentBottomSheet
                     )
                 }
             }
@@ -205,9 +204,9 @@ fun TikTokBottomAppBar(
             selected = false,
             onClick = {},
             icon = {
-                Icon(painter = painterResource(id = R.drawable.ic_now), contentDescription = "now icon", modifier = Modifier.size(28.dp))
+                Icon(Icons.Default.ShoppingCart, contentDescription = "cart icon", modifier = Modifier.size(28.dp))
             },
-            label = { Text("Now", style = TextStyle(color = Color.White, fontSize = 14.sp))},
+            label = { Text("Shop", style = TextStyle(color = Color.White, fontSize = 14.sp))},
             colors = iconSelected
         )
 

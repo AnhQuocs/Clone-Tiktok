@@ -9,12 +9,19 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleEventObserver
+import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.media3.common.Player
 import androidx.media3.common.util.UnstableApi
 import com.example.clonetiktok.designsystem.TiktokVideoPlayer
@@ -30,18 +37,29 @@ fun VideoDetailScreen(
     onShowComment: (Int) -> Unit
 ) {
     val uiState = viewModel.uiState.collectAsState()
+    val lifecycleOwner = LocalLifecycleOwner.current
+    var isAppInForeground by remember { mutableStateOf(true) } // ✅ Thêm biến kiểm soát app
 
     if (uiState.value == VideoDetailUiState.Default) {
         viewModel.handleAction(VideoDetailAction.LoadData(videoId))
     }
 
+    // ✅ Lắng nghe sự kiện Lifecycle của app
+    DisposableEffect(lifecycleOwner) {
+        val observer = LifecycleEventObserver { _, event ->
+            isAppInForeground = event == Lifecycle.Event.ON_RESUME
+        }
+        lifecycleOwner.lifecycle.addObserver(observer)
+        onDispose { lifecycleOwner.lifecycle.removeObserver(observer) }
+    }
+
     // ✅ Kiểm soát phát/dừng video và âm lượng
-    LaunchedEffect(isActive) {
-        if (isActive) {
+    LaunchedEffect(isActive, isAppInForeground) {
+        if (isActive && isAppInForeground) {
             viewModel.videoPlayer.seekTo(0)
-            viewModel.playVideo() // Phát video khi active
+            viewModel.playVideo() // Phát video khi active và app trong foreground
         } else {
-            viewModel.pauseVideo() // Dừng hẳn video khi không active
+            viewModel.pauseVideo() // Dừng video khi không active hoặc app vào background
         }
     }
 
