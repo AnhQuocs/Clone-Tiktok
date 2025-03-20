@@ -6,3 +6,8 @@
 
 ### Horizontal pager and following screen
 ![](image/following.jpg)
+
+---
+
+### Main screen
+![](image/main-screen.jpg)
