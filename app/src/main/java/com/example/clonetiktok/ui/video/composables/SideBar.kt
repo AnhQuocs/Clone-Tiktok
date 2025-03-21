@@ -118,7 +118,7 @@ fun AudioTrackView(
         painter = painterResource(id = R.drawable.ic_audio_track),
         contentDescription = "audio track",
         modifier = modifier
-            .size(48.dp)
+            .size(52.dp)
             .rotate(rotation)
     )
 }
@@ -149,7 +149,7 @@ fun VideoAttractiveInfoItem(
         Icon(
             painter = painterResource(id = icon),
             contentDescription = "icon",
-            modifier = Modifier.size(30.dp),
+            modifier = Modifier.size(32.dp),
             tint = Color.White
         )
 

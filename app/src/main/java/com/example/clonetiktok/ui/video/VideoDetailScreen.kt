@@ -23,6 +23,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.media3.common.Player
+import androidx.media3.common.util.Log
 import androidx.media3.common.util.UnstableApi
 import com.example.clonetiktok.designsystem.TiktokVideoPlayer
 import com.example.clonetiktok.ui.video.composables.SideBarView
@@ -57,11 +58,16 @@ fun VideoDetailScreen(
     LaunchedEffect(isActive, isAppInForeground) {
         if (isActive && isAppInForeground) {
             viewModel.videoPlayer.seekTo(0)
-            viewModel.playVideo() // Phát video khi active và app trong foreground
+            viewModel.playVideo()
+            viewModel.videoPlayer.playWhenReady = true
+            viewModel.videoPlayer.volume = 1f
         } else {
-            viewModel.pauseVideo() // Dừng video khi không active hoặc app vào background
+            viewModel.videoPlayer.pause()
+            viewModel.videoPlayer.playWhenReady = false // 🔴 Dừng phát hoàn toàn
+            viewModel.videoPlayer.volume = 0f
         }
     }
+
 
     DisposableEffect(Unit) {
         onDispose {
@@ -76,6 +82,8 @@ fun VideoDetailScreen(
             onShowComment(videoId)
         }
     ) { action -> viewModel.handleAction(action) }
+
+    Log.d("VideoPlayer", "Player State: ${viewModel.videoPlayer.playWhenReady}")
 }
 
 @UnstableApi

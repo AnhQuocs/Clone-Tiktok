@@ -35,7 +35,8 @@ class VideoDetailViewModel @Inject constructor(
     fun handleAction(action: VideoDetailAction) {
         when (action) {
             is VideoDetailAction.LoadData -> {
-                videoPlayer.pause() // ⛔ Dừng video trước đó
+                videoPlayer.stop() // ⛔ Dừng video trước đó
+                videoPlayer.clearMediaItems()
                 videoPlayer.seekTo(0) // 🔄 Đặt lại thời gian về 0
                 loadVideo(action.id) // ⏯ Tải và phát video mới
             }
@@ -59,7 +60,9 @@ class VideoDetailViewModel @Inject constructor(
     private fun playVideo(videoResourceId: Int) {
         val uri = RawResourceDataSource.buildRawResourceUri(videoResourceId)
         val mediaItem = MediaItem.fromUri(uri)
+        videoPlayer.clearMediaItems()
         videoPlayer.setMediaItem(mediaItem)
+        videoPlayer.prepare()
         videoPlayer.play()
     }
 
