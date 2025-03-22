@@ -149,7 +149,7 @@ fun VideoDetailScreen(
 
         VideoInfoArea(
             accountName = "AnhQuocs",
-            videoName = "Muahahahahahhahahahhaahahahhahahahahaahahhahahaah",
+            videoName = "Clone Tiktok",
             hashtag = listOf(
                 "#jetpack_compose",
                 "#android",
