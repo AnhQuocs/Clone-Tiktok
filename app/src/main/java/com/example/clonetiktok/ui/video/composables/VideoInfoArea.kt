@@ -1,6 +1,5 @@
 package com.example.clonetiktok.ui.video.composables
 
-import android.provider.MediaStore.Video
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row

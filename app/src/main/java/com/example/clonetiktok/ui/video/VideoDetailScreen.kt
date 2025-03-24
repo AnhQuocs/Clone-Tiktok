@@ -149,7 +149,7 @@ fun VideoDetailScreen(
 
         VideoInfoArea(
             accountName = "AnhQuocs",
-            videoName = "Clone Tiktok",
+            videoName = "Hoang Sa and Truong Sa belong to Vietnam",
             hashtag = listOf(
                 "#jetpack_compose",
                 "#android",

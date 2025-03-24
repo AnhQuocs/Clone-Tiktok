@@ -189,7 +189,7 @@ fun TikTokBottomAppBar(
         indicatorColor = Color.Transparent // Xóa nền oval xanh lá
     )
 
-    NavigationBar(containerColor = Color.Black, modifier = Modifier.height(56.dp)) {
+    NavigationBar(containerColor = Color.Black, modifier = Modifier.height(60.dp)) {
         NavigationBarItem(
             selected = true,
             onClick = {onOpenHome()},
