@@ -10,4 +10,4 @@
 ---
 
 ### Main screen
-![](image/main-screen.jpg)
+![](image/main_screen.jpg)
