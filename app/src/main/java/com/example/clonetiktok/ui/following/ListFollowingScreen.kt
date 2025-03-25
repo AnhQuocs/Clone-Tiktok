@@ -18,7 +18,7 @@ fun ListFollowingVideoScreen(
     onShowComment: (Int) -> Unit,
     isFollowingActive: Boolean // 🔥 Biết được màn hình có đang hiển thị hay không
 ) {
-    val pagerState = rememberPagerState(pageCount = { 10 })
+    val pagerState = rememberPagerState(pageCount = { 20 })
 
     VerticalPager(state = pagerState) { videoId ->
         val viewModel: VideoDetailViewModel = hiltViewModel(key = videoId.toString())

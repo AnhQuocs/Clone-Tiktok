@@ -11,14 +11,13 @@ import com.example.clonetiktok.ui.video.VideoDetailScreen
 import com.example.clonetiktok.ui.video.VideoDetailViewModel
 
 @UnstableApi
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun ListForYouVideoScreen(
     modifier: Modifier = Modifier,
     onShowComment: (Int) -> Unit,
     isForYouActive: Boolean
 ) {
-    val pagerState = rememberPagerState(pageCount = { 10 })
+    val pagerState = rememberPagerState(pageCount = { 20 })
 
     VerticalPager(state = pagerState) { videoId ->
         val viewModel: VideoDetailViewModel = hiltViewModel(key = videoId.toString())

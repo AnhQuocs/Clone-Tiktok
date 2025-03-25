@@ -67,7 +67,7 @@ fun FollowingScreen(
     modifier: Modifier = Modifier,
     isScreenActive: Boolean
 ) {
-    val pagerState = rememberPagerState(pageCount = { 10 })
+    val pagerState = rememberPagerState(pageCount = { 20 })
     val cardWidth = (LocalConfiguration.current.screenWidthDp * 2/3) - 24 //hiển thị các video bên cạnh
     val screenWidth = LocalConfiguration.current.screenWidthDp
     val paddingValue = (screenWidth - cardWidth) / 2

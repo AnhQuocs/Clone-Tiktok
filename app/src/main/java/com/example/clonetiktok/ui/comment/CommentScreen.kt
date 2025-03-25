@@ -28,6 +28,6 @@ fun CommentScreen(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        Text("Comment for video: $videoId")
+        Text("Comment for video: ${videoId + 1}")
     }
 }
