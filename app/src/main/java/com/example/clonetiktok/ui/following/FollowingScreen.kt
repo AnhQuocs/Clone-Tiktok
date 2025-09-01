@@ -258,7 +258,6 @@ fun CreatorCard(
     }
 }
 
-
 @Composable
 fun AvatarFollowing(
     modifier: Modifier = Modifier
