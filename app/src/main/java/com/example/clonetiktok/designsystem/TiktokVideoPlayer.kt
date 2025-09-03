@@ -14,7 +14,6 @@ fun TiktokVideoPlayer(
     modifier: Modifier = Modifier,
     player: Player
 ) {
-    // composable        <---   Adapter   <---         PlayerView(AndroidView)
     AndroidView(factory = {
         context ->
         PlayerView(context).also {
